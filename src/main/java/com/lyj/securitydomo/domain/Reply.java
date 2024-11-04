@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -28,4 +30,12 @@ public class Reply {
 
     @Column(name = "regDate", updatable = false)
     private LocalDateTime regDate = LocalDateTime.now();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")  // 부모 댓글 ID
+    private Reply parent;  // 대댓글일 경우 부모 댓글을 참조
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    private List<Reply> children = new ArrayList<>();  // 대댓글 목록
+
 }

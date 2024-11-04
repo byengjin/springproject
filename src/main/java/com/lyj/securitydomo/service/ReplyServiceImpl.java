@@ -16,12 +16,22 @@ public class ReplyServiceImpl implements ReplyService {
 
     public ReplyServiceImpl(ReplyRepository replyRepository, ModelMapper modelMapper) {
         this.replyRepository = replyRepository;
-        this.modelMapper = modelMapper; // ModelMapper 주입
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public Reply saveReply(ReplyDTO replyDTO) {
-        Reply reply = modelMapper.map(replyDTO, Reply.class); // 수정
+        // ReplyDTO를 Reply 엔티티로 변환
+        Reply reply = modelMapper.map(replyDTO, Reply.class);
+
+        // 대댓글일 경우, 부모 댓글 설정
+        if (replyDTO.getParentId() != null) {
+            Reply parentReply = replyRepository.findById(replyDTO.getParentId())
+                    .orElseThrow(() -> new RuntimeException("Parent reply not found"));
+            reply.setParent(parentReply);  // 부모 댓글 설정
+        }
+
+        // 댓글 저장
         return replyRepository.save(reply);
     }
 
@@ -41,4 +51,6 @@ public class ReplyServiceImpl implements ReplyService {
     public List<Reply> getRepliesByPostId(Long postId) {
         return replyRepository.findByPostId(postId);
     }
+
+
 }

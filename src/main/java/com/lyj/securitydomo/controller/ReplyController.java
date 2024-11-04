@@ -31,12 +31,21 @@ public class ReplyController {
     @PostMapping("/modify/{replyId}")
     public String modifyReply(@PathVariable Long replyId, @RequestParam String content, @RequestParam Long postId) {
         replyService.modifyReply(replyId, content);
-        return "redirect:/reply/list/" + postId;
+        return "redirect:/read/" + postId;
     }
 
     @PostMapping("/delete/{replyId}")
     public String deleteReply(@PathVariable Long replyId, @RequestParam Long postId) {
         replyService.removeReply(replyId);
+        return "redirect:/read/" + postId;
+    }
+
+    @PostMapping("/createReply")
+    public String createReply(@ModelAttribute ReplyDTO replyDTO, @RequestParam Long postId, @RequestParam(required = false) Long parentId) {
+        replyDTO.setPostId(postId);
+        replyDTO.setParentId(parentId);  // 대댓글의 부모 ID 설정
+        replyService.saveReply(replyDTO);
         return "redirect:/reply/list/" + postId;
     }
+
 }

@@ -10,4 +10,5 @@ public class ReplyDTO {
     private Long userId;
     private String content;
     private LocalDateTime regDate;
+    private Long parentId;  // 부모 댓글 ID
 }
