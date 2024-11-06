@@ -1,7 +1,6 @@
 package com.lyj.securitydomo.controller;
 
-import com.lyj.securitydomo.DTO.ReplyDTO;
-import com.lyj.securitydomo.domain.Reply;
+import com.lyj.securitydomo.dto.ReplyDTO;
 import com.lyj.securitydomo.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,9 +20,10 @@ public class ReplyController {
         return "reply/list";
     }
 
-    @PostMapping("/create")
-    public String createReply(@ModelAttribute ReplyDTO replyDTO, @RequestParam Long postId) {
+    @PostMapping("/createReply")
+    public String createReply(@ModelAttribute ReplyDTO replyDTO, @RequestParam Long postId, @RequestParam(required = false) Long parentId) {
         replyDTO.setPostId(postId);
+        replyDTO.setParentId(parentId);  // 대댓글의 부모 ID 설정
         replyService.saveReply(replyDTO);
         return "redirect:/reply/list/" + postId;
     }
@@ -40,12 +40,6 @@ public class ReplyController {
         return "redirect:/read/" + postId;
     }
 
-    @PostMapping("/createReply")
-    public String createReply(@ModelAttribute ReplyDTO replyDTO, @RequestParam Long postId, @RequestParam(required = false) Long parentId) {
-        replyDTO.setPostId(postId);
-        replyDTO.setParentId(parentId);  // 대댓글의 부모 ID 설정
-        replyService.saveReply(replyDTO);
-        return "redirect:/reply/list/" + postId;
-    }
+
 
 }

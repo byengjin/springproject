@@ -1,6 +1,6 @@
 package com.lyj.securitydomo.service;
 
-import com.lyj.securitydomo.DTO.ReplyDTO;
+import com.lyj.securitydomo.dto.ReplyDTO;
 import com.lyj.securitydomo.domain.Reply;
 
 import java.util.List;

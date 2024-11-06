@@ -1,4 +1,4 @@
-package com.lyj.securitydomo.DTO;
+package com.lyj.securitydomo.dto;
 
 import lombok.Data;
 import java.time.LocalDateTime;
